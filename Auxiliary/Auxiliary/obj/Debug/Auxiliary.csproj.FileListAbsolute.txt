@@ -1,0 +1,6 @@
+C:\My_Pro\C#_course\Auxiliary\Auxiliary\bin\Debug\Auxiliary.exe.config
+C:\My_Pro\C#_course\Auxiliary\Auxiliary\bin\Debug\Auxiliary.exe
+C:\My_Pro\C#_course\Auxiliary\Auxiliary\bin\Debug\Auxiliary.pdb
+C:\My_Pro\C#_course\Auxiliary\Auxiliary\obj\Debug\Auxiliary.csprojResolveAssemblyReference.cache
+C:\My_Pro\C#_course\Auxiliary\Auxiliary\obj\Debug\Auxiliary.exe
+C:\My_Pro\C#_course\Auxiliary\Auxiliary\obj\Debug\Auxiliary.pdb
