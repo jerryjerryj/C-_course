@@ -11,14 +11,7 @@ namespace Auxiliary
         private double A, B, C; //more useful than array and long names
         private Triangle(double a, double b, double c)
         {
-            try
-            {
-                CheckInput(a,b,c);
-            }
-            catch (ArgumentException)
-            {
-                throw;
-            }
+            CheckInput(a,b,c);
             A = a;
             B = b;
             C = c;
@@ -50,10 +43,6 @@ namespace Auxiliary
         }
         private static double GetSide(double opposideAngle, double knownSide, double knownSideOpposideAngle)
         {
-            //var tmp1 = Math.Round(Math.Sin(opposideAngle),4);
-            //var tmp2 = Math.Round(Math.Sin(knownSideOpposideAngle),4);
-            //var tmp3 = tmp1 * knownSide;
-            //var tmp4 = tmp3 / tmp2;
             return Math.Sin(opposideAngle) * knownSide / Math.Sin(knownSideOpposideAngle);
         }
         public static double DegreesToRadians(double angle)
