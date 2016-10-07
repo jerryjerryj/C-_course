@@ -16,9 +16,14 @@ namespace Practice_1_Incapsulation
             this.column = column;
         }
     }
-    public class Game
+    public abstract class Game
     {
-        public int[][] desk { get; private set; }
+      protected int[][] desk;
+
+        public int this[int row, int colum]
+        {
+            get { return desk[row][colum]; }
+        }
 
         public Game(params int[] values)
         {
@@ -26,74 +31,77 @@ namespace Practice_1_Incapsulation
 
             if (size != Math.Round(size))
                 throw new ArgumentException("Number of values must shape a square.");
-            if(Array.FindIndex(values,x=>x == 0)==-1)
+            if (Array.FindIndex(values, x => x == 0) == -1)
                 throw new ArgumentException("Values must contain null");
-            if(values.Length!= values.Distinct().ToArray().Length)
+            if (values.Length != values.Distinct().ToArray().Length)
                 throw new ArgumentException("Values mustn't have duplicates");
 
             desk = FillDesk((int)size, values);
         }
-        public Coordinates GetLocation(int value)
-        {
-            foreach (var row in desk)
-            {
-                 int column = Array.FindIndex(row, x => x == value);
-                 if (column != -1)
-                    return new Coordinates( Array.FindIndex(desk, x => x == row), column);
-            }
-            throw new IndexOutOfRangeException("Can't find the value");
-        }
+        public Game(int[][] desk) { }
+
         private int[][] FillDesk(int size, int[] values)
         {
-            int[][] desk = new int[size][]; 
+            int[][] desk = new int[size][];
             for (int i = 0; i < size; ++i)
             {
                 desk[i] = new int[size];
                 for (int j = 0; j < size; ++j)
-                    desk[i][j] = values[i*size + j];
+                    desk[i][j] = values[i * size + j];
             }
             return desk;
         }
-        public void Shift(int value)
+        protected Coordinates GetLocation(int value)
         {
-            try
+            foreach (var row in desk)
             {
-                var location = GetLocation(value);
-                var locationToChangeWith = FindZero(location);
-                Swap(desk, location, locationToChangeWith);
+                int column = Array.FindIndex(row, x => x == value);
+                if (column != -1)
+                    return new Coordinates(Array.FindIndex(desk, x => x == row), column);
             }
-            catch (Exception)
-            {
-                throw new InvalidOperationException("Can't perform shifting");
-            }
+            throw new IndexOutOfRangeException("Can't find the value");
         }
-        private Coordinates FindZero(Coordinates coordinates)
+
+       
+        protected Coordinates GetCoordsOfZero(Coordinates coordinates)
         {
             var temp = new Coordinates(coordinates.row + 1, coordinates.column);
-            if (CheckIsZero(temp)) return temp;
+            if (IsZero(temp)) return temp;
 
             temp.row -= 2;
-            if (CheckIsZero(temp)) return temp;
+            if (IsZero(temp)) return temp;
 
             temp = new Coordinates(coordinates.row, coordinates.column + 1);
-            if (CheckIsZero(temp)) return temp;
+            if (IsZero(temp)) return temp;
 
             temp.column -= 2;
-            if (CheckIsZero(temp)) return temp;
+            if (IsZero(temp)) return temp;
 
-            throw new ArgumentException("Can't find zero here"); 
+            throw new ArgumentException("Can't find zero here");
 
         }
-        private bool CheckIsZero(Coordinates coordinates)
+        private bool IsZero(Coordinates coordinates)
         {
+            if (IsOutFromBorders(coordinates.column) || IsOutFromBorders(coordinates.row))
+                return false;
             return desk[coordinates.row][coordinates.column] == 0;
         }
-        private void Swap(int[][] desk, Coordinates one, Coordinates two)
+        private bool IsOutFromBorders(int coordinate)
         {
-            // better desk to class?
-            int temp = desk[one.column][one.row];
-            desk[one.column][one.row] = desk[two.column][two.row];
-            desk[two.column][two.row] = temp;
+            if (coordinate < 0 || coordinate > desk.Length / 2)
+                return true;
+            return false;
         }
+        protected void Swap(int[][] desk, Coordinates one, Coordinates two)
+        {
+            var temp = desk[one.row][one.column];
+            SetValueToDesk(desk, one, desk[two.row][two.column]);
+            SetValueToDesk(desk, two, temp);
+        }
+        private void SetValueToDesk(int[][] desk, Coordinates coordinates, int value)
+        {
+            desk[coordinates.row][coordinates.column] = value;
+        }
+      
     }
 }
