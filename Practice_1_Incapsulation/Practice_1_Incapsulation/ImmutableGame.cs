@@ -16,7 +16,7 @@ namespace Practice_1_Incapsulation
             this.desk = desk;
         }
 
-        public ImmutableGame Shift(int value)
+        public override Game Shift(int value)
         {
             var copy = GetCopy(desk);
             var location = GetLocation(value);
@@ -34,6 +34,14 @@ namespace Practice_1_Incapsulation
             }
             return result;
         }
-      
+
+        protected override Coordinates GetLocationInternal(int value)
+        {
+            return null;
+        }
+        protected override int ValueFromHistoryInternal(int row, int column)
+        {            
+            return -1;
+        }
     }
 }

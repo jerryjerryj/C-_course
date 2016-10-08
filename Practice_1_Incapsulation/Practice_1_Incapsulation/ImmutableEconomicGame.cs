@@ -17,25 +17,54 @@ namespace Practice_1_Incapsulation
        }
         
     }
-    public class ImmutableEconomicGame : ImmutableGame
+    public class ImmutableEconomicGame : ImmutableGame 
     {
         public ImmutableEconomicGame(params int[] values) : base(values) { }
         public ImmutableEconomicGame(int[][] desk) : base(desk) { }
+        public ImmutableEconomicGame(int[][] desk, List<History> history) : base(desk) 
+        {
+            this.history = history;
+        }
 
         private List<History> history = new List<History>();
 
-        public ImmutableEconomicGame Shift(int value)
+        public override Game Shift(int value)
         {
             var first = GetLocation(value);
             var second = GetCoordsOfZero(first);
-            AddValueToHistory(history, first, second);
-            AddValueToHistory(history, second, first);
-            return this;
+            var newHistory = new List<History>(history);
+            AddValuesToHistory(newHistory, first, second);
+            return new ImmutableEconomicGame(desk, newHistory);
         }
-        private void AddValueToHistory(List<History> history, Coordinates from, Coordinates to)
+        private void AddValuesToHistory(List<History> history, Coordinates first, Coordinates second)
         {
-            history.Add(new History(to, desk[from.row][from.column]));
+            var valueFirst = GetValueFromCoordinates(first);
+            var valueSecond = GetValueFromCoordinates(second);
+            history.Add(new History(first, valueSecond ));
+            history.Add(new History(second, valueFirst ));
         }
-        //todo getlocation, indexer, virtual(?) sift
+        private int GetValueFromCoordinates(Coordinates coordinates)
+        {
+            int value = ValueFromHistoryInternal(coordinates.row, coordinates.column);
+            if (value == -1)
+                value = desk[coordinates.row][coordinates.column];
+            return value;
+        }
+        protected override Coordinates GetLocationInternal(int value)
+        {
+            var foundedLocation = history.FindLast(x => x.value == value);
+            if (foundedLocation != null)
+                return foundedLocation.coordinates;
+            return null;
+        }
+
+        protected override int ValueFromHistoryInternal(int row, int column)
+        {
+            var foundedValue = history.FindLast(x => (x.coordinates.column == column) && (x.coordinates.row == row));
+            if (foundedValue != null)
+                return foundedValue.value;
+            return -1;
+        }
+        
     }
 }

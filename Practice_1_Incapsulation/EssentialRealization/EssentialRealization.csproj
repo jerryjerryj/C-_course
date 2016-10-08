@@ -52,6 +52,9 @@
   <ItemGroup>
     <Compile Include="TestGame.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestSimpleGame.cs" />
+    <Compile Include="TestImmutableEconomicGame.cs" />
+    <Compile Include="TestImmutableGame.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Practice_1_Incapsulation\Practice_1_Incapsulation.csproj">

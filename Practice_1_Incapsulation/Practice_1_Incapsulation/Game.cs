@@ -22,8 +22,15 @@ namespace Practice_1_Incapsulation
 
         public int this[int row, int colum]
         {
-            get { return desk[row][colum]; }
+            get {
+                var internalResult = ValueFromHistoryInternal(row, colum);
+                if (internalResult != -1)
+                    return internalResult;
+                return desk[row][colum]; }
         }
+
+        protected abstract Coordinates GetLocationInternal(int value);
+        protected abstract int ValueFromHistoryInternal(int row, int column); 
 
         public Game(params int[] values)
         {
@@ -40,6 +47,8 @@ namespace Practice_1_Incapsulation
         }
         public Game(int[][] desk) { }
 
+        public abstract Game Shift(int value);
+
         private int[][] FillDesk(int size, int[] values)
         {
             int[][] desk = new int[size][];
@@ -53,6 +62,10 @@ namespace Practice_1_Incapsulation
         }
         protected Coordinates GetLocation(int value)
         {
+            var location = GetLocationInternal(value);
+            if (location != null)
+                return location;
+
             foreach (var row in desk)
             {
                 int column = Array.FindIndex(row, x => x == value);
@@ -61,10 +74,13 @@ namespace Practice_1_Incapsulation
             }
             throw new IndexOutOfRangeException("Can't find the value");
         }
-
+        
        
         protected Coordinates GetCoordsOfZero(Coordinates coordinates)
         {
+            var location = GetLocationInternal(0);
+            if (location != null)
+                return location;
             var temp = new Coordinates(coordinates.row + 1, coordinates.column);
             if (IsZero(temp)) return temp;
 
