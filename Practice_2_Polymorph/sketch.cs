@@ -1,3 +1,6 @@
+
+ѕошагова€ игра.
+
 abstract class Feature{
 
 + double FeatureAmount {get; private set;}
@@ -36,35 +39,97 @@ abstract class Character
 + int Health {get; private set;}
 + int Mana {get; private set;}
 
-+ ManaRegenFeature ManaRegen;
-+ SpeedFeature Speed;
-+ PowerFeature Power;
++ ManaRegenFeature ManaRegen {get; private set;}
++ SpeedFeature Speed {get; private set;}
++ PowerFeature Power {get; private set;}
 
-+  List<Abilities> abilities {get; private set;}
++ abstract void UseAbility(); //тратит ману и использует способность. иначе - exception
 
-+ abstract void UseAbility(int abilityId); //тратит ману и использует способность. иначе - exception
-
++ void ChangeFeature(Feature f);
 + void ChangeHealth(int amount); // если здоровье меньше или равно 0 - exception => персонаж умирает
 }
 
-class Warrior{
+class Warrior : Character
+{
+   IncreasePower increasePower;
+   DecreasePower decreasePower;
+   SlowManaRegen slowManaRegen;
+}
+class Healer : Character
+{
+   FasterManaRegen fasterManaRegen;
+   IncreaseSpeed increaseSpeed;
+}
+class Mage : Character
+{
+   DecreaseSpeed decreaseSpeed;
+   DecreasePower decreasePower;
+   FasterManaRegen fasterManaRegen;
+   
 }
 
 abstract class Ability
 {
-- int Cost;
-- int CooldownSec;
-- double Amount;
-+ abstract void Use(Character influencedCharacter){}; //вешает buff на персонажа, посредством передачи объекта buff контроллеру buffcontroller
+- static int Cost;
+- static int CooldownSec;
+- static double Amount;
+protected void UseAbility(Character influencedCharacter){}; //вешает buff на персонажа, посредством передачи объекта buff контроллеру buffcontroller
 }
 
-abstract class OnSelfAbility : Ability{
-    Use ???
+abstract class OnSelfAbility : Ability
+{
+
+- Character myself;
++ OnSelfAbility(Character myself){}
+
++ virtual void Use();
+
 }
 
-//abstract class ManaRegenAbility : Ability{}
-class SimpleManaAcceleration : OnSelfAbility{}
-class PermanentManaAcceleration : OnSelfAbility{}// много маны, но бафф быстро проходит
-class ManaSlowDown : Ability{}
-//по аналогии с power и speed
+abstract class OnSomeoneAbility : Ability
+{
++ virtual void Use(Character character);
+}
 
+class FasterManaRegen : OnSelfAbility 
+{
++ FasterManaRegen(Character myself): base(myself){}
+}
+
+class SlowManaRegen : OnSomeoneAbility {}
+
+class IncreasePower : OnSelfAbility 
+{
++ IncreasePower(Character myself): base(myself){}
+}
+
+class DecreasePower : OnSomeoneAbility {}
+
+class IncreaseSpeed : OnSelfAbility 
+{
++ IncreaseSpeed(Character myself): base(myself){}
+}
+class DecreaseSpeed : OnSomeoneAbility {}
+
+
+/*
+abstract class ManaRegenAbility : Ability
+{
++ virtual void Use(Character influencedCharacter){};
+}
+class SimpleManaAcceleration : ManaRegenAbility
+{
++ override void Use(Character influencedCharacter){};
+}
+
+class PermanentManaAcceleration : ManaRegenAbility// много маны, но бафф быстро проходит
+{
++ override void Use(Character influencedCharacter){};
+}
+
+class ManaSlowDown : ManaRegenAbility
+{
++ override void Use(Character influencedCharacter){};
+}
+// speed и power по аналогии...
+*/
