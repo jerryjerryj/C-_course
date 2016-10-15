@@ -1,5 +1,5 @@
 
-Пошаговая игра.
+РџРѕС€Р°РіРѕРІР°СЏ РёРіСЂР°.
 
 abstract class Feature{
 
@@ -17,24 +17,24 @@ class Buff{
 - Feature feature;
 - Time InspiredTime;
 
-+ void Buff(); // изменяет feature у персонажа
-+ void UnBuff(); // изменяет feature у персонажа обратно
++ void Buff(); // РёР·РјРµРЅСЏРµС‚ feature Сѓ РїРµСЂСЃРѕРЅР°Р¶Р°
++ void UnBuff(); // РёР·РјРµРЅСЏРµС‚ feature Сѓ РїРµСЂСЃРѕРЅР°Р¶Р° РѕР±СЂР°С‚РЅРѕ
 + bool isInspired(Time currentTime);
 
 }
 
 class BuffController{
-// запускается извне каждые n секунд или 1 ход (если пошаговая игра)
+// Р·Р°РїСѓСЃРєР°РµС‚СЃСЏ РёР·РІРЅРµ РєР°Р¶РґС‹Рµ n СЃРµРєСѓРЅРґ РёР»Рё 1 С…РѕРґ (РµСЃР»Рё РїРѕС€Р°РіРѕРІР°СЏ РёРіСЂР°)
 + List<Buff> Buffs;
-+ void CheckAll(); // откатывает баффы с вышедшем временем, а затем удаляет их из своего списка.
++ void CheckAll(); // РѕС‚РєР°С‚С‹РІР°РµС‚ Р±Р°С„С„С‹ СЃ РІС‹С€РµРґС€РµРј РІСЂРµРјРµРЅРµРј, Р° Р·Р°С‚РµРј СѓРґР°Р»СЏРµС‚ РёС… РёР· СЃРІРѕРµРіРѕ СЃРїРёСЃРєР°.
 
 }
 
 abstract class Character
 {
-// разница между int и feature :
-// int - значения больше 0 => нельзя делать откат => нельзя вещать buff т.к. у него есть срок действия
-// feature - значения любые
+// СЂР°Р·РЅРёС†Р° РјРµР¶РґСѓ int Рё feature :
+// int - Р·РЅР°С‡РµРЅРёСЏ Р±РѕР»СЊС€Рµ 0 => РЅРµР»СЊР·СЏ РґРµР»Р°С‚СЊ РѕС‚РєР°С‚ => РЅРµР»СЊР·СЏ РІРµС‰Р°С‚СЊ buff С‚.Рє. Сѓ РЅРµРіРѕ РµСЃС‚СЊ СЃСЂРѕРє РґРµР№СЃС‚РІРёСЏ
+// feature - Р·РЅР°С‡РµРЅРёСЏ Р»СЋР±С‹Рµ
 
 + int Health {get; private set;}
 + int Mana {get; private set;}
@@ -43,10 +43,10 @@ abstract class Character
 + SpeedFeature Speed {get; private set;}
 + PowerFeature Power {get; private set;}
 
-+ abstract void UseAbility(); //тратит ману и использует способность. иначе - exception
++ abstract void UseAbility(); //С‚СЂР°С‚РёС‚ РјР°РЅСѓ Рё РёСЃРїРѕР»СЊР·СѓРµС‚ СЃРїРѕСЃРѕР±РЅРѕСЃС‚СЊ. РёРЅР°С‡Рµ - exception
 
 + void ChangeFeature(Feature f);
-+ void ChangeHealth(int amount); // если здоровье меньше или равно 0 - exception => персонаж умирает
++ void ChangeHealth(int amount); // РµСЃР»Рё Р·РґРѕСЂРѕРІСЊРµ РјРµРЅСЊС€Рµ РёР»Рё СЂР°РІРЅРѕ 0 - exception => РїРµСЂСЃРѕРЅР°Р¶ СѓРјРёСЂР°РµС‚
 }
 
 class Warrior : Character
@@ -73,7 +73,7 @@ abstract class Ability
 - static int Cost;
 - static int CooldownSec;
 - static double Amount;
-protected void UseAbility(Character influencedCharacter){}; //вешает buff на персонажа, посредством передачи объекта buff контроллеру buffcontroller
+protected void UseAbility(Character influencedCharacter){}; //РІРµС€Р°РµС‚ buff РЅР° РїРµСЂСЃРѕРЅР°Р¶Р°, РїРѕСЃСЂРµРґСЃС‚РІРѕРј РїРµСЂРµРґР°С‡Рё РѕР±СЉРµРєС‚Р° buff РєРѕРЅС‚СЂРѕР»Р»РµСЂСѓ buffcontroller
 }
 
 abstract class OnSelfAbility : Ability
@@ -122,7 +122,7 @@ class SimpleManaAcceleration : ManaRegenAbility
 + override void Use(Character influencedCharacter){};
 }
 
-class PermanentManaAcceleration : ManaRegenAbility// много маны, но бафф быстро проходит
+class PermanentManaAcceleration : ManaRegenAbility// РјРЅРѕРіРѕ РјР°РЅС‹, РЅРѕ Р±Р°С„С„ Р±С‹СЃС‚СЂРѕ РїСЂРѕС…РѕРґРёС‚
 {
 + override void Use(Character influencedCharacter){};
 }
@@ -131,5 +131,5 @@ class ManaSlowDown : ManaRegenAbility
 {
 + override void Use(Character influencedCharacter){};
 }
-// speed и power по аналогии...
+// speed Рё power РїРѕ Р°РЅР°Р»РѕРіРёРё...
 */
