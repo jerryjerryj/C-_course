@@ -6,51 +6,26 @@ using System.Threading.Tasks;
 
 namespace Generic
 {
-    class Pair
+    public class IDKeeper
     {
-        public Guid guid { get; private set; }
-        public dynamic someObject { get; private set; }
-        public Pair(Guid guid, dynamic someObject)
-        {
-            this.guid = guid;
-            this.someObject = someObject;
-        }
-    }
-    class IDKeeper
-    {
-        private static Dictionary<Guid, dynamic> guidBase = new Dictionary<Guid,dynamic>();
-
+        private static Dictionary<Guid, Object> guidBase = new Dictionary<Guid,Object>();
+        
         public TObject CreateObject<TObject>()
-            where TObject: class, new()
+            where TObject: new()
         {
             var someObject = new TObject();
             guidBase.Add(Guid.NewGuid(), someObject);
             return someObject;
         }
 
-        public Pair GetPair(dynamic someObject)
+        public Dictionary<Guid, Object> GetPair<TObject>()
         {
-            var key = guidBase.FirstOrDefault(x => x.Value == someObject).Key;
-            return new Pair(key, someObject);
+            return guidBase.Where(x => x.Value.GetType()== typeof(TObject)).ToDictionary(x=>x.Key, x=>x.Value);
         }
-        //public Pair GetPair<TObject>()
-        //    where TObject : new()
-        //{
-        //    var someObject = new TObject();
-        //    var key = guidBase.FirstOrDefault(x => x.Value == someObject ).Key;
-        //    return new Pair(key, someObject);
-        //}
 
-        public dynamic GetObject(Guid guid)
+        public Object GetObject(Guid guid)
         {
-            try
-            {
-                return guidBase[guid];
-            }
-            catch(KeyNotFoundException)
-            {
-                return null;
-            }
+           return guidBase.FirstOrDefault(x => x.Key == guid).Value;
         }
 
     }
