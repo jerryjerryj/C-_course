@@ -8,7 +8,7 @@ namespace Generic
 {
     public class IDKeeper
     {
-        private static Dictionary<Guid, Object> guidBase = new Dictionary<Guid,Object>();
+        private Dictionary<Guid, Object> guidBase = new Dictionary<Guid,Object>();
         
         public TObject CreateObject<TObject>()
             where TObject: new()

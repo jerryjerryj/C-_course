@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Generic;
+using System.Linq;
 
 
 namespace UnitTests
@@ -38,16 +39,34 @@ namespace UnitTests
         }
 
         [TestMethod]
+        public void TestIfKeeperReturnsEmptyDictionaryWhenItHaventAnyPairForRequestedType()
+        {
+            var notExistedPair = keeper.GetPair<int>();
+            Assert.AreEqual(0, notExistedPair.Count);
+        }
+        [TestMethod]
         public void TestIfKeeperReturnsPairsWhenItHaveObjectsOfRequestedType()
         {
             var pairs = keeper.GetPair<MyClass>();
             Assert.AreEqual(2, pairs.Count);
         }
+
         [TestMethod]
-        public void TestIfKeeperReturnsNullWhenItHaventAnyPairForRequestedType()
+        public void TestIfKeeperReturnsNullWhenItHaventAnyObjectForRequestedGuid()
         {
-            var notExistedPair = keeper.GetPair<int>();
-            Assert.AreEqual(0, notExistedPair.Count);
+            var notExistedObject = keeper.GetObject(new Guid());
+            Assert.IsNull(notExistedObject);
         }
+        [TestMethod]
+        public void TestIfKeeperReturnsObjectForRequestedGuid()
+        {
+            var pairs = keeper.GetPair<MyClass>();
+            var getMyClass = keeper.GetObject(pairs.First().Key);
+            Assert.AreEqual(pairs.First().Value, getMyClass);
+        }
+
+
     }
+
+
 }
