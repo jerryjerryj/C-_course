@@ -42,7 +42,7 @@ namespace UnitTests
         public void TestIfKeeperReturnsEmptyDictionaryWhenItHaventAnyPairForRequestedType()
         {
             var notExistedPair = keeper.GetPair<int>();
-            Assert.AreEqual(0, notExistedPair.Count);
+            Assert.IsNull(notExistedPair);
         }
         [TestMethod]
         public void TestIfKeeperReturnsPairsWhenItHaveObjectsOfRequestedType()
@@ -64,8 +64,6 @@ namespace UnitTests
             var getMyClass = keeper.GetObject(pairs.First().Key);
             Assert.AreEqual(pairs.First().Value, getMyClass);
         }
-
-
     }
 
 
