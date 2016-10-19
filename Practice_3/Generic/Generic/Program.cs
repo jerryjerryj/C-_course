@@ -23,13 +23,17 @@ namespace Generic
         {
             var keeper2 = new IDKeeper();
             for (int i = 0; i < 10000;++i )
-                keeper2.CreateObject<List<int>>();
+                keeper2.CreateObject<MyClass>();
             keeper2.CreateObject<StringBuilder>();
+            keeper2.CreateObject<MyClass2>();
 
+            keeper2.GetObject(new Guid());
             var timer = new Stopwatch();
             timer.Start();
-            keeper2.GetPair<StringBuilder>();
+            var temp = keeper2.GetPair<MyClass2>();
             timer.Stop();
+
+
 
             Console.Write(timer.Elapsed);
             Console.ReadKey();
