@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Practice_4.Task1
 {
-    public class Order { }
-    public class OrderRequest { }
-    public class OrderProcessor
+    public class Transaction { }
+    public class TransactionRequest { }
+    public class TransactionProcessor
     {
-        private Func<OrderRequest, bool> check;
-        private Func<OrderRequest, Order> register;
-        private Action<Order> save;
+        private Func<TransactionRequest, bool> check;
+        private Func<TransactionRequest, Transaction> register;
+        private Action<Transaction> save;
 
-        public OrderProcessor(Func<OrderRequest, bool> check, Func<OrderRequest, Order> register, Action<Order> save)
+        public TransactionProcessor(Func<TransactionRequest, bool> check, Func<TransactionRequest, Transaction> register, Action<Transaction> save)
         {
             this.check = check;
             this.register = register;
             this.save = save;
         }
-        public Order Process(OrderRequest request)
+        public Transaction Process(TransactionRequest request)
         {
             if (!check(request))
                 throw new ArgumentException();
