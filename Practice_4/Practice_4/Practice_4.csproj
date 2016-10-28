@@ -43,11 +43,15 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TransactionProcessor.cs" />
+    <Compile Include="Task1\TransactionProcessor.cs" />
+    <Compile Include="Task2\OrderProcessor.cs" />
+    <Compile Include="Task2\Processor.cs" />
+    <Compile Include="Task2\TransactionProcessor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
