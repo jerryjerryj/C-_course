@@ -5,23 +5,48 @@ using System.Text;
 using System.Threading.Tasks;
 
 //using Practice_4.Task1;
-using Practice_4.Task2;
+using Practice_4.Task3;
 
 namespace Practice_4
 {
     class Program
     {
-        public static bool MyCheck(TransactionRequest request){ return true; }
-        public static Transaction MyRegister(TransactionRequest request){ return new Transaction(); }
-        public static void MySave(Transaction request) { }
+        //public static bool MyCheck(TransactionRequest request){ return true; }
+        //public static Transaction MyRegister(TransactionRequest request){ return new Transaction(); }
+        //public static void MySave(Transaction request) { }
+        //static void Main(string[] args)
+        //{
+        //    var transactionProcessor = new TransactionProcessor((x) => MyCheck(x), (y) => MyRegister(y), (z) => MySave(z));
+        //    transactionProcessor.Process(new TransactionRequest());
+        //}
 
         static void Main(string[] args)
         {
-            // Task 1
-            // var transactionProcessor= new TransactionProcessor((x) => MyCheck(x), (y) => MyRegister(y), (z)=> MySave(z));
-            // transactionProcessor.Process(new TransactionRequest());
+            var provider = new DataModel();
 
-            // Task 2
+            var observer1 = new TableObserver("<1>");
+            observer1.Subscribe(provider);
+            var observer2 = new TableObserver("<2>");
+            observer2.Subscribe(provider);
+
+            Console.WriteLine("  Inserting zero row and column:");
+            provider.InsertRow(0);
+            provider.InsertColumn(0);
+
+            Console.WriteLine("\n  Put value in existed cell:");
+            provider.Put(0, 0, 10);
+
+            Console.WriteLine("\n  Put value in non-existed cell:");
+            provider.Put(10,10, 10);
+
+            Console.WriteLine("\n  Unsubscribe second:");
+            observer2.Unsubscribe();
+
+            Console.WriteLine("\n  Inserting one more row:");
+            provider.InsertRow(1);
+
+            Console.ReadKey();
+
         }
     }
 }

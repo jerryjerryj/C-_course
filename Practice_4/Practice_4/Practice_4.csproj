@@ -47,6 +47,10 @@
     <Compile Include="Task2\OrderProcessor.cs" />
     <Compile Include="Task2\Processor.cs" />
     <Compile Include="Task2\TransactionProcessor.cs" />
+    <Compile Include="Task3\ObservableDataModel.cs" />
+    <Compile Include="Task3\PerformedChangesInfo.cs" />
+    <Compile Include="Task3\DataModel.cs" />
+    <Compile Include="Task3\TableObserver.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
