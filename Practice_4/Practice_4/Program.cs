@@ -24,9 +24,9 @@ namespace Practice_4
         {
             var provider = new DataModel();
 
-            var observer1 = new TableObserver("<1>");
+            var observer1 = new TableObserver("TableObserver");
             observer1.Subscribe(provider);
-            var observer2 = new TableObserver("<2>");
+            var observer2 = new Logger("Logger");
             observer2.Subscribe(provider);
 
             Console.WriteLine("  Inserting zero row and column:");
