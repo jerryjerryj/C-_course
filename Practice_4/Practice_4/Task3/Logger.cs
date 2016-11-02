@@ -34,17 +34,17 @@ namespace Practice_4.Task3
 
          public virtual void OnNext(PerformedChangesInfo value)
          {
-             if (value.GetType() == typeof(ChangedRowField))
+             if(value is ChangedRowField)
              {
                  var smth = (ChangedRowField)value;
                  PrintMessage("Inserted row : " + smth.insertedFieldIndex);
              }
-             else if (value.GetType() == typeof(ChangedColumnField))
+             else if (value is ChangedColumnField)
              {
                  var smth = (ChangedColumnField)value;
                  PrintMessage("Inserted Column : " + smth.insertedFieldIndex);
              }
-             else if (value.GetType() == typeof(ChangedCell))
+             else if (value is ChangedCell)
              {
                  var smth = (ChangedCell)value;
                  PrintMessage("Cell [" + smth.row + ";" + smth.column + "] has changed it's value to" + smth.changedValue);
