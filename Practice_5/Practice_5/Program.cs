@@ -11,7 +11,7 @@ namespace Practice_5
     {
         static void Main(string[] args)
         {
-            Expression<Func<double, double>> f = x =>(x+5)*x;
+            Expression<Func<double, double>> f = x => Math.Sin(x*x);
             Expression<Func<double, double>> df = f.Differentiate();
 
             Console.WriteLine("f  = {0}", f);   //f  = x => (x * x)

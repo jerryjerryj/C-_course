@@ -20,6 +20,8 @@ namespace Practice_5
                 return Expression.Constant(0d);
             if (e.NodeType == ExpressionType.Parameter)
                 return Expression.Constant(1d);
+            if (e.NodeType == ExpressionType.Call)
+                return CallSin(e);
 
             var left = ((BinaryExpression)e).Left;
             var right = ((BinaryExpression)e).Right;
@@ -45,6 +47,15 @@ namespace Practice_5
                 Expression.Multiply(Differentiate(v), u),
                 Expression.Multiply(v, Differentiate(u)));
             throw new NotImplementedException();
+        }
+        private static Expression CallSin(Expression e)
+        {
+            var callExpression = (MethodCallExpression)e;
+
+            if (typeof(Math).GetMethod("Sin") != callExpression.Method)
+                throw new ArgumentException("Function is not 'Sin()'");
+
+            return Expression.Call(null,typeof(Math).GetMethod("Cos"), Differentiate(callExpression.Arguments[0]));
         }
     }
 }
