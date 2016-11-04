@@ -21,61 +21,34 @@ namespace Application
             return Directory.GetFiles(solutionPath, "*.dll", SearchOption.AllDirectories);
         }
 
-        public static List<TPlugin> GetPlugins<TPlugin>(string[] pathsToDlls)
-        {
-            var plugins = new List<TPlugin>();
-            foreach (var path in pathsToDlls)
-            {
-                var dll = new Dll(path);
-                var instances = dll.GetInstances<TPlugin>();
-                if (instances != null)
-                    plugins.AddRange(instances);
-            }
-            return plugins;
-        }
 
         static void Main(string[] args)
         {
             var pathsToDlls = FindDlls("Framework");
-            var plugins = GetPlugins<IPlugin>(pathsToDlls);
-            foreach (var plugin in plugins)
-                Console.WriteLine("Name is : " + plugin.Name);
 
-            Console.ReadKey();
-        }
-        private class Dll
-        {
-            private Assembly assembly;
-            public Dll(string path)
+            foreach (var path in pathsToDlls)
             {
                 try
                 {
-                    assembly = Assembly.LoadFrom(path);
+                    var assembly = Assembly.LoadFrom(path);
+                    if (assembly == null) continue;
+
+                    var types = assembly.GetTypes();
+                    if (types == null) continue;
+
+                    var something = Activator.CreateInstanceFrom(path, "");
+                    foreach (var type in types)
+                    {
+                        if (!(type is IPlugin)) continue;
+
+                        var method = (IPlugin)Activator.CreateInstance(type);
+                        Console.WriteLine("Name is : " + method.Name);
+                    }
                 }
-                catch (FileNotFoundException)
-                {
-                    assembly = null;
-                }
+                catch (FileNotFoundException) { }
             }
 
-            public List<TObject> GetInstances<TObject>()
-            {
-                if (assembly == null)
-                    return null;
-
-                var types = assembly.GetTypes();
-                if (types == null)
-                    return null;
-
-                var result = new List<TObject>(); 
-                foreach (var type in types)
-                {
-                    var instanceFromDll = Activator.CreateInstance(type);
-                    if ((instanceFromDll != null) && (instanceFromDll is TObject))
-                        result.Add((TObject)instanceFromDll);
-                }
-                return result;
-            }
+            Console.ReadKey();
         }
     }
 }
