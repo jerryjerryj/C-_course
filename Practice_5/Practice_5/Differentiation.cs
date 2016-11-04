@@ -12,7 +12,7 @@ namespace Practice_5
         public static Expression<Func<double, double>> Differentiate(this Expression<Func<double, double>> expression)
         {
             var result = Differentiate(expression.Body);
-            return Expression.Lambda<Func<double, double>>(result, Expression.Parameter(typeof(double), "x"));
+            return Expression.Lambda<Func<double, double>>(result,expression.Parameters[0]);
         }
         private static Expression Differentiate(Expression e)
         {
@@ -21,7 +21,7 @@ namespace Practice_5
             if (e.NodeType == ExpressionType.Parameter)
                 return Expression.Constant(1d);
             if (e.NodeType == ExpressionType.Call)
-                return CallSin(e);
+                return DifferentiateSin(e);
 
             var left = ((BinaryExpression)e).Left;
             var right = ((BinaryExpression)e).Right;
@@ -48,7 +48,7 @@ namespace Practice_5
                 Expression.Multiply(v, Differentiate(u)));
             throw new NotImplementedException();
         }
-        private static Expression CallSin(Expression e)
+        private static Expression DifferentiateSin(Expression e)
         {
             var callExpression = (MethodCallExpression)e;
 

@@ -12,7 +12,7 @@ namespace Application
 {
     class Program
     {
-        public static string[] FindDLLs(string solutionName)
+        public static string[] FindDlls(string solutionName)
         {
             var solutionPath = Directory.GetCurrentDirectory();
             while (Path.GetFileName(solutionPath)!= solutionName)
@@ -20,23 +20,62 @@ namespace Application
 
             return Directory.GetFiles(solutionPath, "*.dll", SearchOption.AllDirectories);
         }
+
+        public static List<TPlugin> GetPlugins<TPlugin>(string[] pathsToDlls)
+        {
+            var plugins = new List<TPlugin>();
+            foreach (var path in pathsToDlls)
+            {
+                var dll = new Dll(path);
+                var instances = dll.GetInstances<TPlugin>();
+                if (instances != null)
+                    plugins.AddRange(instances);
+            }
+            return plugins;
+        }
+
         static void Main(string[] args)
         {
-            var DLLs = FindDLLs("Framework");
+            var pathsToDlls = FindDlls("Framework");
+            var plugins = GetPlugins<IPlugin>(pathsToDlls);
+            foreach (var plugin in plugins)
+                Console.WriteLine("Name is : " + plugin.Name);
 
-            foreach (var dll in DLLs)
-            {
-                var types = Assembly.LoadFrom(dll).GetTypes();
-                foreach(var type in types)
-                {
-                    var someClass = Activator.CreateInstance(type);
-                   // var properties = type.GetProperties();
-                   // var value = properties[0].GetValue(someClass);
-                    var name = type.GetProperty("Name").GetValue(someClass);
-                    Console.WriteLine("DLL : {0}, Name : {1}",type.FullName, name);
-                }
-            } 
             Console.ReadKey();
+        }
+        private class Dll
+        {
+            private Assembly assembly;
+            public Dll(string path)
+            {
+                try
+                {
+                    assembly = Assembly.LoadFrom(path);
+                }
+                catch (FileNotFoundException)
+                {
+                    assembly = null;
+                }
+            }
+
+            public List<TObject> GetInstances<TObject>()
+            {
+                if (assembly == null)
+                    return null;
+
+                var types = assembly.GetTypes();
+                if (types == null)
+                    return null;
+
+                var result = new List<TObject>(); 
+                foreach (var type in types)
+                {
+                    var instanceFromDll = Activator.CreateInstance(type);
+                    if ((instanceFromDll != null) && (instanceFromDll is TObject))
+                        result.Add((TObject)instanceFromDll);
+                }
+                return result;
+            }
         }
     }
 }
