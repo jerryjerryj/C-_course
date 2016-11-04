@@ -26,6 +26,7 @@ namespace Application
         {
             var pathsToDlls = FindDlls("Framework");
 
+
             foreach (var path in pathsToDlls)
             {
                 try
@@ -33,14 +34,13 @@ namespace Application
                     var assembly = Assembly.LoadFrom(path);
                     if (assembly == null) continue;
 
-                    var types = assembly.GetTypes();
+                    var types = from type in assembly.GetTypes()
+                                  where typeof(IPlugin).IsAssignableFrom(type)
+                                  select type;
                     if (types == null) continue;
 
-                    var something = Activator.CreateInstanceFrom(path, "");
                     foreach (var type in types)
                     {
-                        if (!(type is IPlugin)) continue;
-
                         var method = (IPlugin)Activator.CreateInstance(type);
                         Console.WriteLine("Name is : " + method.Name);
                     }
