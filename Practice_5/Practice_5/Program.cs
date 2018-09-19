@@ -11,14 +11,14 @@ namespace Practice_5
     {
         static void Main(string[] args)
         {
-            Expression<Func<double, double>> f = x => Math.Sin(x*x);
+            Expression<Func<double, double>> f = x => 2*x*x*Math.Sin(x);
             Expression<Func<double, double>> df = f.Differentiate();
 
             Console.WriteLine("f  = {0}", f);   //f  = x => (x * x)
             Console.WriteLine("df = {0}", df);  //df = x => (x + x)
 
             Func<double, double> compiled = df.Compile();
-            double result = compiled.Invoke(10);
+            double result = compiled.Invoke(12);
             Console.WriteLine(result);          //24
             Console.ReadKey();
         }

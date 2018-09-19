@@ -55,6 +55,10 @@ namespace Practice_5
             if (typeof(Math).GetMethod("Sin") != callExpression.Method)
                 throw new ArgumentException("Function is not 'Sin()'");
 
+            var argument = callExpression.Arguments[0];
+            if (argument.NodeType == ExpressionType.Parameter || argument.NodeType == ExpressionType.Constant)
+                return Expression.Call(null, typeof(Math).GetMethod("Cos"), argument); 
+
             return Expression.Call(null,typeof(Math).GetMethod("Cos"), Differentiate(callExpression.Arguments[0]));
         }
     }

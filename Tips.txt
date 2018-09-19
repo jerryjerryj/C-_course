@@ -1,0 +1,7 @@
+
+# Переменные по умолчанию
+public static string ReadAll(string filename, Encoding enc = null) {}
+
+
+# Сравнение с присваиванием
+enc = enc ?? Encoding.UTF8;
